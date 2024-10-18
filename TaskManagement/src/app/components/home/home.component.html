@@ -1,0 +1,150 @@
+<div class="container">
+    <!-- Navbar (original, untouched) -->
+    <div class="nav">
+      <nav class="navbar">
+        <div class="logo-container">
+          <h3 class="logo-text">TaskManager</h3>
+        </div>
+        <ul>
+          <li>Welcome, {{ email }}</li>
+          <li><a routerLink="/welcome">Logout</a></li>
+        </ul>
+      </nav>
+    </div>
+
+<div class="contact-container">
+    <div class="container">
+      <div class="row mb-4">
+        <div class="col-md-9">
+          <div class="input-group">
+            <input class="form-control ml-sm-2" type="search"  placeholder="Search tasks..." aria-label="Search"  [value]="searchQuery" 
+            (input)="searchQuery = $event.target.value; filterTasks(searchQuery)">
+            <button class="btn btn-success" type="button" data-toggle="modal" data-target="#createtaskmodal"  style="height: 44px;border-radius: 4px; background-color:rgb(42, 167, 86);color: white; margin-left: 44px;margin-top: 0px;font-size: 15px;">
+              Create Task
+            </button>
+          </div>
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="col-md-12">
+          <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Task Name</th>
+                <th scope="col">Task Description</th>
+                <th scope="col">Task Date</th>
+                <th scope="col">Status</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let task of filteredTaskList">
+              <tr>
+                <td>{{task.taskName}}</td>
+                <td>{{task.taskDescription}}</td>
+                <td>{{task.taskDate | date: 'shortDate'}}</td>
+                <td>{{task.status}}</td>
+                <td>
+                  <button type="button" class="btn btn-primary btn-sm"  data-toggle="modal"  (click)="openEditModal(task)" data-target="#edittaskmodal">Edit</button>
+                  <button type="button" class="btn btn-danger btn-sm" (click)="executeFunctionOnConfirm(task.taskID)">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+</div>
+
+<div class="modal fade" id="createtaskmodal"   tabindex="-1" role="dialog" aria-labelledby="createtaskmodal" >
+    <div class="modal-dialog modal-lg modal-dialog-centered" tabindex="-1">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Create Task</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+              <div class="form-row">
+                  <div class="col-md-5">
+                      <div class="form-group">
+                          <label for="name">Task Name: <span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" id="name" name="taskName" placeholder="Enter Task Name"
+                              [(ngModel)]="modaltaskList.taskName">
+                          <!-- <div *ngIf="employeeName && !employee.empName" class="text-danger">Name is required.</div> -->
+                      </div>
+                      <div class="form-group">
+                          <label for="name">Task Description: <span class="text-danger">*</span></label>
+                          <textarea type="text" class="form-control" id="name" name="taskDescription" placeholder="Enter Task Description"
+                              [(ngModel)]="modaltaskList.taskDescription"></textarea>
+                          <!-- <div *ngIf="employeeName && !employee.empName" class="text-danger">Name is required.</div> -->
+                      </div>
+                      <div class="form-group">
+                        <label for="taskDate">Task Date: <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="taskDate" name="taskDate"
+                            [(ngModel)]="modaltaskList.taskDate" />
+                      </div>
+                  </div> 
+              </div>
+          </form>
+      </div>
+        <div class="modal-footer">
+           <button type="button" class="btn btn-secondary" (click)="resetForm()" data-dismiss="modal">Close</button>
+           <button type="submit" id="addtaskValidation"  class="btn btn-primary"  (click)="createTask()">Create</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal" id="edittaskmodal"  #edittaskmodal>
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Task</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+            <div class="form-row">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="name">Task Name: <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="name" name="taskName" placeholder="Enter Task Name"
+                            [(ngModel)]="selectedTask.taskName">
+                    </div>
+                    <div class="form-group">
+                        <label for="taskDescription">Task Description: <span class="text-danger">*</span></label>
+                        <textarea type="text" class="form-control" id="taskDescription" name="taskDescription" placeholder="Enter Task Description"
+                            [(ngModel)]="selectedTask.taskDescription"></textarea>
+                    </div>
+                    <div class="form-group">
+                      <label for="taskDate">Task Date: <span class="text-danger">*</span></label>
+                      <input type="date" class="form-control" id="taskDate" name="taskDate"
+                          [(ngModel)]="selectedTask.taskDate" [ngModel]="selectedTask.taskDate | date: 'yyyy-MM-dd'" />
+                    </div>
+                    <div class="form-group">
+                      <label for="status">Status: <span class="text-danger">*</span></label>
+                      <select class="form-control" id="status" name="taskStatus" [(ngModel)]="selectedTask.status">
+                          <option value="Not Completed">Not Completed</option>
+                          <option value="Completed">Completed</option>
+                          <option value="Upcoming">Upcoming</option>
+                      </select>
+                  </div>
+                </div> 
+            </div>
+        </form>
+    </div>
+      <div class="modal-footer">
+         <button type="button" class="btn btn-secondary" (click)="resetForm()" data-dismiss="modal">Close</button>
+         <button type="button" id="updatetaskValidation"  class="btn btn-primary"  (click)="updateTask()">Update</button>
+      </div>
+    </div>
+  </div>
+</div>

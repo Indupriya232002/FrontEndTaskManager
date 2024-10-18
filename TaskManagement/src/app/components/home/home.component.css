@@ -1,0 +1,134 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .logo-container {
+    width: 70px; /* Adjust the width as needed */
+    height: 50px; /* Adjust the height as needed */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-right: 50%; /* Space between logo and other nav items */
+    padding: 20px;
+    padding-right: 70px;
+  }
+  
+  .logo-text {
+    margin-left: -200px; /* Space between logo and text */
+    color: rgb(239, 237, 244);
+    font-size: 1.5em; /* Adjust font size as needed */
+    text-align: left;
+    margin-top: -11px;
+  }
+
+  .logo-text:hover{
+    text-decoration: underline;
+    color: blue;
+  }
+  
+
+  .navbar {
+    background-color: rgb(42, 158, 208);
+    height: 60px;
+    width: 1650px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px 30px;
+    box-sizing: border-box;
+    padding: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+  }
+  
+  .navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: right;
+    margin-right: 14%;
+  }
+  
+  .navbar ul li {
+    display: inline;
+    /* margin-right: 10px; */
+    margin: 0%;
+  }
+  
+  .navbar ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+  }
+  
+  .navbar ul li a:hover {
+    text-decoration: underline;
+    color: blue;
+  }
+
+  .container
+  {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .contact-container {
+    background-color: #e0f7fa;
+    height: 100vh;
+    width: 99.8vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 80px;
+}
+
+.container-fluid {
+    padding: 20px;
+  }
+  
+  .row {
+    margin-bottom: 20px;
+  }
+  
+  /* Search input styling */
+  .form-control {
+    margin-top: 10px;
+  }
+  
+  /* Align the Create Task button to the right */
+  .text-right {
+    text-align: right;
+  }
+  
+  .btn-success {
+    margin-top: 10px;
+  }
+  
+  /* Task table styling */
+  .table {
+    margin-top: 20px;
+    width: 100%; /* Ensure the table spans the full width */
+  }
+  
+  thead {
+    background-color: #343a40;
+    color: white;
+  }
+  
+  /* Proper vertical alignment of table content */
+  td, th {
+    vertical-align: middle;
+    text-align: center;
+  }
+  
+  /* Add margin for better visibility of buttons */
+  button {
+    margin-right: 5px;
+  }

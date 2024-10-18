@@ -1,0 +1,144 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .logo-container {
+    width: 70px; /* Adjust the width as needed */
+    height: 50px; /* Adjust the height as needed */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-right: 50%; /* Space between logo and other nav items */
+    padding: 20px;
+    padding-right: 70px;
+  }
+  
+  .logo-text {
+    margin-left: -310px; /* Space between logo and text */
+    color: rgb(239, 237, 244);
+    font-size: 1.5em; /* Adjust font size as needed */
+    text-align: left;
+    margin-top: -11px;
+  }
+
+  .logo-text:hover{
+    text-decoration: underline;
+    color: blue;
+  }
+  
+
+  .navbar {
+    background-color: rgb(42, 158, 208);
+    height: 60px;
+    width: 1650px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px 30px;
+    box-sizing: border-box;
+    padding: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+  }
+  
+  .navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: right;
+    margin-right: 14%;
+  }
+  
+  .navbar ul li {
+    display: inline;
+    /* margin-right: 10px; */
+    margin: 0%;
+  }
+  
+  .navbar ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+  }
+  
+  .navbar ul li a:hover {
+    text-decoration: underline;
+    color: blue;
+  }
+
+  .container
+  {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .contact-container {
+    background-color: #e0f7fa;
+    height: 100vh;
+    width: 99.8vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contact-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    width: 60%;
+    max-width: 600px;
+    text-align: left;
+    height: 410px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-size: 18px;
+    color: #555;
+    margin-left:29px ;
+}
+
+.form-group input {
+    width: 85%;
+    padding: 10px;
+    font-size: 18px;
+    background-color: #fff3e0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 10px;
+    margin-left: 29px;
+}
+
+button {
+    width: 89%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    font-size: 18px;
+    border: none;
+    border-radius: 0;
+    margin-top: 10px;
+    margin-left: 30px;
+    border-radius: 4px;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.required-star {
+    color: red;
+    font-weight: bold;
+  }
