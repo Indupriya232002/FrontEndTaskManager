@@ -129,9 +129,12 @@ export class HomeComponent implements OnInit {
     } else {
       const selectedDate = new Date(this.modaltaskList.taskDate);
       const currentDate = new Date();
-      currentDate.setHours(0, 0, 0, 0); // Set time to midnight for comparison
       
-      // Check if the selected date is in the past (excluding today)
+      // Set both dates to midnight (00:00:00) for date-only comparison
+      selectedDate.setHours(0, 0, 0, 0);
+      currentDate.setHours(0, 0, 0, 0);
+      
+      // Check if the selected date is before today (exclude today)
       if (selectedDate < currentDate) {
         this.validateTaskDate = true;
         this.isPastDate = true;
@@ -165,8 +168,6 @@ export class HomeComponent implements OnInit {
       }
     });
   }
-
-
 
   openEditModal(task: Task)
   {
