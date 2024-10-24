@@ -19,14 +19,17 @@ export class HomeComponent implements OnInit {
     taskID:0,
     taskName :"", 
     taskDescription: "",
-    taskDate: new Date(),
     status  :"Not Completed"
   };
+  minDate: Date = new Date();
+  isPastDate: boolean = false; 
 
   selectedTask : Task = new Task; 
 
   filteredTaskList: Task[] = [];
   searchQuery: string = '';
+
+  errorMessage : string = "";
 
   validateTaskId = false;
   validateTaskName = false;
@@ -46,6 +49,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.email = window.localStorage.getItem("email");
     this.getTaskList();
+    this.resetForm();
   }
 
   getTaskList()
@@ -73,9 +77,76 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  createTask(){
+  resetForm()
+  {
+    this.modaltaskList = {
+      taskID: 0,
+      taskName: "",
+      taskDescription: "",
+      status: "Not Completed", // Reset status to default
+    };
+  this.modaltaskList.taskDate
+  this.isPastDate = false;
+  this.validateTaskId = false;
+  this.validateTaskName = false;
+  this.validateTaskDescription = false;
+  this.validateTaskDate = false;
+  this.validateTaskStatus = false;
+
+  this.updateValidateTaskId = false;
+  this.updateValidateTaskName = false;
+  this.updateValidateTaskDescription = false;
+  this.updateValidateTaskDate = false;
+  this.updateValidateTaskStatus = false;
+
+  }
+
+  createTask() {
+    // Reset validation flags
+    this.validateTaskName = false;
+    this.validateTaskDescription = false;
+    this.validateTaskDate = false;
+    this.validateTaskStatus = false;
+    this.isPastDate = false;
+     
+    // Validate Task Name
+    if (!this.modaltaskList.taskName || this.modaltaskList.taskName.trim() === '') {
+      this.validateTaskName = true;
+      this.errorMessage = "Task Name is Required.";
+    }
+
+    // Validate Task Description
+    if (!this.modaltaskList.taskDescription || this.modaltaskList.taskDescription.trim() === '') {
+      this.validateTaskDescription = true;
+      this.errorMessage = "Task Description is Required.";
+    }
+
+    // Validate Task Date
+    if (!this.modaltaskList.taskDate) {
+      this.validateTaskDate = true;
+      this.errorMessage = "Task Date is Required.";
+      
+    } else {
+      const selectedDate = new Date(this.modaltaskList.taskDate);
+      const currentDate = new Date();
+      currentDate.setHours(0, 0, 0, 0); // Set time to midnight for comparison
+      
+      // Check if the selected date is in the past (excluding today)
+      if (selectedDate < currentDate) {
+        this.validateTaskDate = true;
+        this.isPastDate = true;
+        this.errorMessage = "Task Date cannot be in the past.";
+      }
+    }
+
+    // If any validation errors exist, stop execution
+    if (this.validateTaskName || this.validateTaskDescription || this.validateTaskDate) {
+      return;
+    }
+    
+    // Proceed with task creation if no validation errors
     this.homeservice.addTask(this.modaltaskList).subscribe({
-      next:(response) =>{
+      next: (response) => {
         Swal.fire({
           icon: 'success',
           title: 'Task Created Successfully...!',
@@ -85,34 +156,17 @@ export class HomeComponent implements OnInit {
         this.resetForm();
         this.closeModal();
       },
-      error:(error) =>{
+      error: (error) => {
         Swal.fire({
-          icon:'error',
-          title:'Error...!',
-          showConfirmButton:true,
+          icon: 'error',
+          title: 'Error...!',
+          showConfirmButton: true,
         });
       }
     });
-
   }
 
-  closeModal()
-  {
-    const modal: HTMLElement = this.createtaskmodal.nativeElement as HTMLElement;
 
-    if (modal) {
-      modal.style.display =  "none";
-      modal.classList.remove('show');
-  
-      const backdrop = document.getElementsByClassName('modal-backdrop')[0];
-      if (backdrop) {
-        backdrop.remove();
-      }
-  
-      document.body.classList.remove('modal-open');
-    }
-
-  }
 
   openEditModal(task: Task)
   {
@@ -122,6 +176,37 @@ export class HomeComponent implements OnInit {
 
   updateTask()
   {
+    this.updateValidateTaskName = false;
+    this.updateValidateTaskDescription = false;
+    this.updateValidateTaskDate = false;
+    this.updateValidateTaskStatus = false;
+    if(!this.selectedTask.taskName || this.selectedTask.taskName.trim() === '')
+    {
+      this.updateValidateTaskName = true;
+      this.errorMessage = "Task Name is Required.";
+    }
+    if(!this.selectedTask.taskDescription || this.selectedTask.taskDescription.trim() === '')
+    {
+      this.updateValidateTaskDescription = true;
+      this.errorMessage = "Task Description is Required.";
+    }
+    if(!this.selectedTask.taskDate)
+    {
+      this.updateValidateTaskDate = true;
+      this.errorMessage = "Task Date is Required.";
+    }
+    if(!this.selectedTask.status)
+    {
+      this.updateValidateTaskStatus = true;
+      this.errorMessage = "Task Status is Required.";
+    }
+
+    if( this.updateValidateTaskName || this.updateValidateTaskDescription || this.updateValidateTaskDate ||
+      this.updateValidateTaskStatus)
+      {
+        return;
+      }
+
     this.homeservice.updateTaskDetails(this.selectedTask).subscribe({
       next:(response) =>{
         Swal.fire({
@@ -144,22 +229,6 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  resetForm()
-  {
-
-  this.validateTaskId = false;
-  this.validateTaskName = false;
-  this.validateTaskDescription = false;
-  this.validateTaskDate = false;
-  this.validateTaskStatus = false;
-
-  this.updateValidateTaskId = false;
-  this.updateValidateTaskName = false;
-  this.updateValidateTaskDescription = false;
-  this.updateValidateTaskDate = false;
-  this.updateValidateTaskStatus = false;
-
-  }
 
   updateTaskCloseModel()
   {
@@ -177,6 +246,24 @@ export class HomeComponent implements OnInit {
   
       document.body.classList.remove('modal-open');
     }
+  }
+
+  closeModal()
+  {
+    const modal: HTMLElement = this.createtaskmodal.nativeElement as HTMLElement;
+
+    if (modal) {
+      modal.style.display =  "none";
+      modal.classList.remove('show');
+  
+      const backdrop = document.getElementsByClassName('modal-backdrop')[0];
+      if (backdrop) {
+        backdrop.remove();
+      }
+  
+      document.body.classList.remove('modal-open');
+    }
+
   }
 
   deleteTaskDetails(id:number)

@@ -3,12 +3,14 @@
     <div class="nav">
       <nav class="navbar">
         <div class="logo-container">
-          <h3 class="logo-text">TaskManager</h3>
+          <h3 class="logo-text">
+            <a routerLink="/welcome" class="taskmanager-link">TaskManager</a>
+          </h3>
         </div>
-        <ul>
+        <!-- <ul>
           <li><a routerLink="/register">Register</a></li>
           <li><a routerLink="/welcome">Logout</a></li>
-        </ul>
+        </ul> -->
       </nav>
     </div>
 
@@ -19,19 +21,28 @@
           <div class="form-group">
             <label for="email">Email Address <span class="required-star">*</span></label>
             <input type="email" id="email" name="email" [(ngModel)]="user.email" #emailField="ngModel" required />
-            <!-- Validation messages can be handled here if needed -->
+            <div *ngIf="validateEmail && !user.email" class="text-danger">{{emailErrorMessage}}</div>
           </div>
       
           <div class="form-group">
             <label for="password">Password <span class="required-star">*</span></label>
-            <input type="password" id="password" name="password" [(ngModel)]="user.password" #passwordField="ngModel" required minlength="6" />
-            <!-- Validation messages can be handled here if needed -->
+            <input type="password" id="password" name="password" [(ngModel)]="user.password"  #passwordInput  required minlength="6" />
+            <span class="toggle-password" (click)="togglePasswordVisibility()">
+              <i [ngClass]="isPasswordVisible ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+            </span>
+            <div *ngIf="validatePasswordmsg && !user.password" class="text-danger">{{passwordErrorMessage}}</div>
           </div>
-      
          
           <button class="submit-button" (click)="onSubmit()">LOG IN</button>
+
+          <div class="no-account">
+            <p>Don't have an account? 
+                <a routerLink="/register" class="register-link">Register</a>
+            </p>
+         </div>
+
         </div>
-      </div>
+    </div>
       
       
 </div>

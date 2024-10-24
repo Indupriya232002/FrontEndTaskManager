@@ -91,6 +91,8 @@ html, body {
 
 .container-fluid {
     padding: 20px;
+    box-sizing: border-box; 
+     width: 100%;
   }
   
   .row {
@@ -100,6 +102,7 @@ html, body {
   /* Search input styling */
   .form-control {
     margin-top: 10px;
+    margin-left: 20px;
   }
   
   /* Align the Create Task button to the right */
@@ -109,8 +112,9 @@ html, body {
   
   .btn-success {
     margin-top: 10px;
+    
   }
-  
+
   /* Task table styling */
   .table {
     margin-top: 20px;
@@ -122,13 +126,58 @@ html, body {
     color: white;
   }
   
-  /* Proper vertical alignment of table content */
-  td, th {
-    vertical-align: middle;
-    text-align: center;
-  }
   
   /* Add margin for better visibility of buttons */
   button {
     margin-right: 5px;
   }
+
+  .table-container {
+    max-height: 500px; /* Adjust the height as needed for your layout */
+    overflow-y: auto;  /* Enable vertical scrolling */
+    margin-top: 20px; /* Adds space above the table */
+}
+
+.table thead {
+  position: sticky;  /* Allows the header to stay fixed when scrolling */
+  top: 0;           /* Positions the header at the top of the table */
+  background-color: #343a40; /* Same as your header background */
+  z-index: 20;      /* Ensures the header is above the table body */
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse; /* Ensure borders collapse */
+}
+
+td, th {
+  vertical-align: middle;
+  text-align: center;
+  padding: 8px; /* Optional: adds some padding for better spacing */
+}
+
+tbody{
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.form-group label {
+  min-width: 150px; /* Adjust based on how much space you want for the label */
+  text-align: left; /* Align labels to the right */
+  padding-left: 20px;
+}
+
+.taskmanager-link {
+  text-decoration: none;
+  color: white;
+}
+
+.taskmanager-link:hover {
+  color: #ffeb3b; /* Add a hover effect if needed */
+  text-decoration: underline;
+}
+
+.text-danger
+{
+  margin-left: 18px;
+}

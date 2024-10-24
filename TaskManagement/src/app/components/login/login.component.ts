@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Login } from 'src/app/models/login.model';
 import { Users } from 'src/app/models/users.model';
 import { UsersService } from 'src/app/services/users.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -11,6 +12,7 @@ import { UsersService } from 'src/app/services/users.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+  @ViewChild('passwordInput', { static: false }) passwordInput!: ElementRef;
 
   constructor(private userservice:UsersService, private router: Router) { }
 
@@ -19,26 +21,113 @@ export class LoginComponent {
     password: "",
   }
 
+ validateEmail = false;
+ validatePasswordmsg = false;
+ emailErrorMessage : string = "";
+ passwordErrorMessage: string = "";
+ isPasswordVisible:boolean = false;
+
+  resetForm(){
+   this.user = {};
+   this.validateEmail = false;
+   this.validatePasswordmsg = false;   
+
+  }
+
+  validateEmailFormat(email: any): boolean {
+    const emailRegex = /^[a-z0-9._%+-]+@gmail\.com$/;
+    return emailRegex.test(email);
+  }
+
+  validatePassword(password: any): boolean {
+    if (password.length < 7) {
+      return false;
+    } 
+    const specialCharacters = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    if (!specialCharacters.test(password)) {
+      return false;
+    }
+    return true;
+  }
+
+  togglePasswordVisibility(): void {
+    this.isPasswordVisible = !this.isPasswordVisible;
+    this.passwordInput.nativeElement.type = this.isPasswordVisible ? 'text' : 'password';
+  }
+
 
   onSubmit() {
-      this.userservice.login(this.user).subscribe({
-        next: (response) => {
-          console.log('Login successful', response);
-
-
-          if(response.message == "Login added successfully")
-          {
-            const userName =this.user.email;
-            localStorage.setItem('email', userName);
-          }
-
-          this.router.navigate(['/home']); 
-        },
-        error: (error) => {
-          console.error('Login failed', error);
+    this.validateEmail = false;
+    this.validatePasswordmsg = false;
+  
+    // Frontend validation for email and password
+    if (!this.user.email) {
+      this.validateEmail = true;
+      this.emailErrorMessage = "Email is Required";
+    } else if (!this.validateEmailFormat(this.user.email)) {
+      this.validateEmail = true;
+      this.user.email = '';
+      this.emailErrorMessage = "Please enter a valid email address in lowercase ending with '@gmail.com'.";
+    }
+  
+    if (!this.user.password) {
+      this.validatePasswordmsg = true;
+      this.passwordErrorMessage = "Password is Required.";
+    } else if (!this.validatePassword(this.user.password)) {
+      this.validatePasswordmsg = true;
+      this.user.password = '';
+      this.passwordErrorMessage = "Password must be at least 7 characters along with one special character.";
+    }
+  
+    // If any validation errors, stop the login process
+    if (this.validateEmail || this.validatePasswordmsg) {
+      return;
+    }
+  
+    // Call the backend to login
+    this.userservice.login(this.user).subscribe({
+      next: (response) => {
+        console.log('Login successful', response);
+  
+        // Check if login is successful based on backend response
+        if (response.message === "Login added successfully") {
+          const userName = this.user.email;
+          localStorage.setItem('email', userName);
+          
+          // Show SweetAlert popup for successful login
+          Swal.fire({
+            icon: 'success',
+            title: 'Login Successful',
+            text: 'You have successfully logged in!',
+          }).then(() => {
+            // After the user clicks "OK" on the popup, navigate to the home page
+            this.router.navigate(['/home']);
+            this.resetForm();
+          });
+          
+        } else {
+          // Show SweetAlert popup for invalid username or password
+          Swal.fire({
+            icon: 'error',
+            title: 'Login Failed',
+            text: 'Invalid username or password. Please try again.',
+          });
         }
-      });
+      },
+      error: (error) => {
+        // Handle error from the backend (e.g., invalid credentials)
+        console.error('Login failed', error);
+  
+        // Show SweetAlert popup for failed login
+        Swal.fire({
+          icon: 'error',
+          title: 'Login Failed',
+          text: 'Login failed: Invalid username or password.',
+        });
+      }
+    });
   }
+  
 
 
 

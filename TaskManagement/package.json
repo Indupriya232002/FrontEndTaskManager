@@ -23,7 +23,7 @@
     "@ng-bootstrap/ng-bootstrap": "^17.0.1",
     "bootstrap": "^4.6.0",
     "rxjs": "^6.6.7",
-    "sweetalert2": "^11.14.3",
+    "sweetalert2": "^11.14.4",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
   },
