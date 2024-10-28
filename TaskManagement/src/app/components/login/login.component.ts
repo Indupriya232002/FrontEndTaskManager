@@ -59,76 +59,78 @@ export class LoginComponent {
   onSubmit() {
     this.validateEmail = false;
     this.validatePasswordmsg = false;
-  
+
     // Frontend validation for email and password
     if (!this.user.email) {
-      this.validateEmail = true;
-      this.emailErrorMessage = "Email is Required";
+        this.validateEmail = true;
+        this.emailErrorMessage = "Email is Required";
     } else if (!this.validateEmailFormat(this.user.email)) {
-      this.validateEmail = true;
-      this.user.email = '';
-      this.emailErrorMessage = "Please enter a valid email address in lowercase ending with '@gmail.com'.";
+        this.validateEmail = true;
+        this.user.email = '';
+        this.emailErrorMessage = "Please enter a valid email address in lowercase ending with '@gmail.com'.";
     }
-  
+
     if (!this.user.password) {
-      this.validatePasswordmsg = true;
-      this.passwordErrorMessage = "Password is Required.";
+        this.validatePasswordmsg = true;
+        this.passwordErrorMessage = "Password is Required.";
     } else if (!this.validatePassword(this.user.password)) {
-      this.validatePasswordmsg = true;
-      this.user.password = '';
-      this.passwordErrorMessage = "Password must be at least 7 characters along with one special character.";
+        this.validatePasswordmsg = true;
+        this.user.password = '';
+        this.passwordErrorMessage = "Password must be at least 7 characters along with one special character.";
     }
-  
-    // If any validation errors, stop the login process
+
+    // If there are validation errors, stop the login process
     if (this.validateEmail || this.validatePasswordmsg) {
-      return;
+        return;
     }
-  
+
     // Call the backend to login
     this.userservice.login(this.user).subscribe({
-      next: (response) => {
-        console.log('Login successful', response);
-  
-        // Check if login is successful based on backend response
-        if (response.message === "Login added successfully") {
-          const userName = this.user.email;
-          localStorage.setItem('email', userName);
-          
-          // Show SweetAlert popup for successful login
-          Swal.fire({
-            icon: 'success',
-            title: 'Login Successful',
-            text: 'You have successfully logged in!',
-          }).then(() => {
-            // After the user clicks "OK" on the popup, navigate to the home page
-            this.router.navigate(['/home']);
-            this.resetForm();
-          });
-          
-        } else {
-          // Show SweetAlert popup for invalid username or password
-          Swal.fire({
-            icon: 'error',
-            title: 'Login Failed',
-            text: 'Invalid username or password. Please try again.',
-          });
-        }
-      },
-      error: (error) => {
-        // Handle error from the backend (e.g., invalid credentials)
-        console.error('Login failed', error);
-  
-        // Show SweetAlert popup for failed login
-        Swal.fire({
-          icon: 'error',
-          title: 'Login Failed',
-          text: 'Login failed: Invalid username or password.',
-        });
-      }
-    });
-  }
-  
+        next: (response) => {
+            console.log('Login successful', response);
 
+            // Check if login is successful based on backend response
+            if (response?.token) {
+                if (response.token) {
+                    localStorage.setItem('token', response.token);
+                }
+
+                if (this.user.email) {
+                    localStorage.setItem('email', this.user.email);
+                }
+
+                // Show SweetAlert popup for successful login
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Login Successful',
+                    text: 'You have successfully logged in!',
+                }).then(() => {
+                    // After the user clicks "OK" on the popup, navigate to the home page
+                    console.log("Navigating to home...");
+                    this.router.navigate(['/home']);
+                    this.resetForm();
+                });
+
+            } else {
+                // Show SweetAlert popup for invalid username or password
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Login Failed',
+                    text: 'Invalid username or password. Please try again.',
+                });
+            }
+        },
+        error: (error) => {
+            console.error('Login failed', error);
+            // Show SweetAlert popup for failed login
+            Swal.fire({
+                icon: 'error',
+                title: 'Login Failed',
+                text: 'Login failed: Invalid username or password.',
+            });
+        }
+    });
+}
 
 
 }

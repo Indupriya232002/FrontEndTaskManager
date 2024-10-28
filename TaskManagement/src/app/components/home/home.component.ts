@@ -2,6 +2,8 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Task } from 'src/app/models/Task.model';
 import { HomeService } from 'src/app/services/Task.service';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router'; 
+import { HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
@@ -44,31 +46,76 @@ export class HomeComponent implements OnInit {
   updateValidateTaskStatus = false;
 
 
-  constructor(private homeservice:HomeService) { }
+  constructor(private homeservice:HomeService,private router: Router) { }
 
   ngOnInit(): void {
     this.email = window.localStorage.getItem("email");
-    this.getTaskList();
+    // this.getTaskList();
     this.resetForm();
+    this.loadTasks();
   }
 
-  getTaskList()
-  {
-    this.homeservice.getAllTasks().subscribe({
-      next:(response)=>{
-        this.taskList = response;
-        this.filteredTaskList = this.taskList;
-      },
-      error:(error)=>
-      {
-        Swal.fire({
-          icon:'error',
-          title:'Error....!!!',
-          showConfirmButton:true,
-        });
-      }
-    });
+  loadTasks(): void {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      // Fetch tasks for the logged-in user
+      this.homeservice.getUserTasks( token).subscribe(
+        (tasks) => {
+          this.taskList = tasks; // Store fetched tasks
+          this.filteredTaskList = this.taskList;
+        },
+        (error) => {
+          console.error('Error fetching tasks', error);
+          // Optionally handle navigation if not authorized
+          if (error.status === 401) {
+            this.router.navigate(['/login']); // Redirect to login if token is invalid
+          }
+        }
+      );
+    } else {
+      console.error('No userId or token found in local storage');
+      this.router.navigate(['/login']); // Redirect to login if no userId or token
+    }
   }
+
+
+  // deleteTask(taskId: string): void {
+  //   const userId = localStorage.getItem('userId'); // Retrieve userId from local storage
+  //   if (userId) {
+  //     this.homeservice.deleteTaskByUserIdAndTaskId(userId, taskId).subscribe(
+  //       (response) => {
+  //         this.loadTasks(); // Refresh the task list after deletion
+  //       },
+  //       (error) => {
+  //         console.error('Error deleting task', error);
+  //       }
+  //     );
+  //   } else {
+  //     console.error('No userId found in local storage');
+  //   }
+  // }
+
+
+  // getTaskList()
+  // {
+  //   this.homeservice.getAllTasks().subscribe({
+  //     next:(response)=>{
+  //       this.taskList = response;
+  //       this.filteredTaskList = this.taskList;
+  //     },
+  //     error:(error)=>
+  //     {
+  //       Swal.fire({
+  //         icon:'error',
+  //         title:'Error....!!!',
+  //         showConfirmButton:true,
+  //       });
+  //     }
+  //   });
+  // }
+
+
 
   filterTasks(query: string): void{
     this.filteredTaskList = this.taskList.filter(task =>
@@ -155,7 +202,7 @@ export class HomeComponent implements OnInit {
           title: 'Task Created Successfully...!',
           showConfirmButton: true,
         });
-        this.getTaskList();
+        this.loadTasks();
         this.resetForm();
         this.closeModal();
       },
@@ -215,7 +262,7 @@ export class HomeComponent implements OnInit {
           title:'Task Updated Successfully',
           showConfirmButton: true
         });
-        this.getTaskList();
+        this.loadTasks();
         this.resetForm();
         this.updateTaskCloseModel();
       },
@@ -267,39 +314,63 @@ export class HomeComponent implements OnInit {
 
   }
 
-  deleteTaskDetails(id:number)
-  {
-    this.homeservice.deleteTaskDetailsById(id).subscribe({
-      next:(response) =>{
+
+  deleteTaskDetails(taskId: number) {
+    const token = localStorage.getItem('token');
+    
+    if (token) {
+      // Decode the JWT to extract the user ID
+      const payload = JSON.parse(atob(token.split('.')[1])); // Decode base64
+      const userId = payload.userId; // Adjust based on your token structure
+  
+      if (userId) {
+        this.homeservice.deleteTaskByUserIdAndTaskId(userId, taskId.toString()).subscribe({
+          next: (response) => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Task Deleted Successfully',
+              showConfirmButton: true
+            });
+            this.loadTasks(); // Refresh the task list after deletion
+          },
+          error: (error) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error Occurred While Deleting Task',
+              text: error.error || 'Task Not Found or Unauthorized Access',
+              showConfirmButton: true
+            });
+          }
+        });
+      } else {
         Swal.fire({
-          icon: 'success',
-          title:'Task Deleted Successfully',
+          icon: 'error',
+          title: 'User ID not found in token',
           showConfirmButton: true
         });
-        this.getTaskList();
-      },
-      error:(error)=>{
-        Swal.fire({
-          icon:'error',
-          title: 'Error Occured While Deleting Task',
-          showConfirmButton: true
-        });
-      }   
-    });
+      }
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Token not found. Please log in again.',
+        showConfirmButton: true
+      });
+    }
   }
 
+  
 
-  executeFunctionOnConfirm(id: number) {
+  executeFunctionOnConfirm(taskId: number) {
     Swal.fire({
       title: 'Are you sure?',
-      text: 'Are you sure you want to delete the Task',
+      text: 'Are you sure you want to delete the Task?',
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.deleteTaskDetails(id);
+        this.deleteTaskDetails(taskId);
       }
     });
   }

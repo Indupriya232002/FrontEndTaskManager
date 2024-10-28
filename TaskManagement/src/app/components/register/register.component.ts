@@ -200,7 +200,7 @@ export class RegisterComponent implements OnInit {
             title: 'User Registered Successfully...!',
             showConfirmButton: true,
           });
-          this.router.navigate(['/home']);
+          this.router.navigate(['/login']);
           this.resetForm();
         },
         error:(error)=>
