@@ -40,6 +40,7 @@
                 <th scope="col">Action</th>
               </tr>
             </thead>
+           
             <tbody *ngFor="let task of filteredTaskList">
               <tr>
                 <td>{{task.taskName}}</td>
@@ -63,6 +64,9 @@
               </tr>
             </tbody>
           </table>
+          <div *ngIf="filteredTaskList == 0" style="display: flex;justify-content: center;font-size: 2em;">
+            <p>No results found</p>
+          </div>
         </div>
       </div>
     </div>

@@ -1,0 +1,155 @@
+/* Global and Navbar Styles */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: Arial, sans-serif;
+}
+
+.logo-container {
+    width: 70px;
+    height: 50px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-right: 50%;
+    padding: 20px;
+    padding-right: 70px;
+}
+
+.logo-text {
+    margin-left: -676px; /* Space between logo and text */
+    color: rgb(239, 237, 244);
+    font-size: 1.5em; /* Adjust font size as needed */
+    text-align: left;
+    margin-top: -11px;
+  }
+
+.logo-text a {
+    color: inherit;
+    text-decoration: none;
+    margin-left: 50px;
+
+}
+
+.logo-text a:hover {
+    text-decoration: underline;
+    color: #111369;
+}
+
+.navbar {
+    background-color: rgb(42, 158, 208);
+    height: 60px;
+    width: 100vw;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+/* Container Styling */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 60px; /* Space for the fixed navbar */
+    height: 100%;
+    width: 100%;
+}
+
+.contact-container {
+    background-color: #e0f7fa;
+    height: calc(100vh - 60px);
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contact-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 40px;
+    width: 60%;
+    max-width: 515px;
+    text-align: center;
+    height: 300px;
+}
+
+.contact-card h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.contact-card p {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.contact-card input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.contact-card button {
+    width: 50%;
+    padding: 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 28px;
+}
+
+.contact-card button:hover {
+    background-color: #218838;
+}
+
+.otp-input {
+    width: 40px;
+    height: 40px;
+    font-size: 1.5em;
+    text-align: center;
+  }
+  .otp-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+  }
+  
+  .otp-input {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    font-size: 18px;
+    margin: 0 5px;
+  }
+
+.back-to-login {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.back-to-login a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.back-to-login a:hover {
+    text-decoration: underline;
+}

@@ -10,6 +10,9 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { ForgotpasswordComponent } from './components/forgotpassword/forgotpassword.component';
+import { ResetpasswordComponent } from './components/resetpassword/resetpassword.component';
+import { OtpverificationComponent } from './components/otpverification/otpverification.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +20,10 @@ import { RouterModule } from '@angular/router';
     LoginComponent,
     RegisterComponent,
     HomeComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    ForgotpasswordComponent,
+    ResetpasswordComponent,
+    OtpverificationComponent
   ],
   imports: [
     BrowserModule,

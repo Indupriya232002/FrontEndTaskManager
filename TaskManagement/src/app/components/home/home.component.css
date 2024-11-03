@@ -170,10 +170,11 @@ tbody{
 .taskmanager-link {
   text-decoration: none;
   color: white;
+  margin-left: 83px;
 }
 
 .taskmanager-link:hover {
-  color: #ffeb3b; /* Add a hover effect if needed */
+  color: #111369; /* Add a hover effect if needed */
   text-decoration: underline;
 }
 

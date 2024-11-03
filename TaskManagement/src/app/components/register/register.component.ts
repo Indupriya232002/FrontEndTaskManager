@@ -20,7 +20,7 @@ export class RegisterComponent implements OnInit {
     lastName: "" ,
     email: "",
     password: "",
-    phoneNum: 0
+    phoneNum: ""
 
   }
 
@@ -137,14 +137,14 @@ export class RegisterComponent implements OnInit {
       this.user.password = '';
       this.passwordErrorMessage = "Password must be at least 7 characters along with one special character."
     }
-    if(!this.user.phoneNum || isNaN(this.user.phoneNum))
+    if(!this.user.phoneNum)
     {
       this.validatePhoneNum = true;
       this.phoneNumErrorMessage = "Phone Number is Required.";
     }else if(!this.validatePhoneNumber(this.user.phoneNum))
     {
       this.validatePhoneNum = true;
-      this.user.phoneNum = 0;
+      this.user.phoneNum = '';
       this.phoneNumErrorMessage = "Phone Number must be 10 digits.";
     }
 

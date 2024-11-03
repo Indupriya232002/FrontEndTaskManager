@@ -162,6 +162,10 @@ a {
     margin-top: 20px;
 }
 
+.no-account p{
+  margin-top: -12px;
+}
+
 .register-link {
     color: #007bff;
     text-decoration: none;
@@ -178,7 +182,7 @@ a {
 }
 
 .taskmanager-link:hover {
-  color: #ffeb3b; /* Add a hover effect if needed */
+  color: #111369; ; /* Add a hover effect if needed */
   text-decoration: underline;
 }
 
@@ -210,4 +214,11 @@ a {
 
 .password-wrapper + .text-danger {
   margin-top: 8px; /* Space between input and validation message */
+}
+
+.forgot {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 16px;
+  display: block;
 }

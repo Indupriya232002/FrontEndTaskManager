@@ -3,64 +3,80 @@ html, body {
   padding: 0;
   height: 100%;
   width: 100%;
-  overflow-x: hidden; /* To prevent horizontal scroll */
 }
 
 /* Navbar Styling */
 .navbar {
   background-color: rgb(42, 158, 208);
-  height: 60px;
-  width: 100vw; /* Adjust to cover the full width */
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding: 0 30px;
-  box-sizing: border-box;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000; /* Ensure it's always above other content */
-}
+    height: 60px;
+    width: 1650px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px 30px;
+    box-sizing: border-box;
+    padding: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+  }
 
 .logo-container {
-  width: 70px;
-  height: 50px;
+  width: 70px; /* Adjust the width as needed */
+  height: 50px; /* Adjust the height as needed */
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  margin-right: auto; /* Pushes other elements to the right */
-  padding-left: 20px; /* Adjust spacing */
+  margin-right: 50%; /* Space between logo and other nav items */
+  padding: 20px;
+  padding-right: 70px;
 }
 
 .logo-text {
-  color: rgb(239, 237, 244);
-  font-size: 1.5em;
-  text-align: left;
-  margin: 0; /* Remove extra margins */
-  margin-top: 10px;
-}
+  margin-left: -676px; /* Space between logo and text */
+    color: rgb(239, 237, 244);
+    font-size: 1.5em; /* Adjust font size as needed */
+    text-align: left;
+    margin-top: -11px;
+  }
 
-.navbar ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  text-align: right;
-}
+  .logo-text:hover{
+    text-decoration: underline;
+    color: #111369;
+  }
 
-.navbar ul li {
-  display: inline;
-  margin-right: 20px;
-}
+  .navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: right;
+    margin-right: 14%;
+  }
+
+  .navbar ul li {
+    display: inline;
+    /* margin-right: 10px; */
+    margin: 0%;
+  }
 
 .navbar ul li a {
-  color: white;
-  text-decoration: none;
-  padding: 5px 10px;
-}
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+  }
 
 .navbar ul li a:hover {
   text-decoration: underline;
   color: blue;
+}
+
+.container
+{
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 /* Contact Card Styling */
@@ -167,7 +183,7 @@ body {
 }
 
 .taskmanager-link:hover {
-  color: #ffeb3b; /* Add a hover effect if needed */
+  color: #111369; ; /* Add a hover effect if needed */
   text-decoration: underline;
 }
 

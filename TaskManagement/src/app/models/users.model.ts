@@ -4,6 +4,6 @@ export class Users {
     lastName?: string 
     email?: string
     password?: string
-    phoneNum?: number
+    phoneNum?: string
   
 }

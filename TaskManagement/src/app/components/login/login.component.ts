@@ -90,7 +90,7 @@ export class LoginComponent {
             console.log('Login successful', response);
 
             // Check if login is successful based on backend response
-            if (response?.token) {
+            if (response?.token != "Invalid username or password") {
                 if (response.token) {
                     localStorage.setItem('token', response.token);
                 }
